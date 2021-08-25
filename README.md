@@ -1,20 +1,9 @@
-# npm-lib-boilerplate
+# minimal-avax-wallet
 
-This repository is a code 'boilerplate' for starting a new npm library. It
-contains the following features:
+This is a minimalist Avalanche (AVAX) X-chain wallet for use with front end web apps, based on [minimal-slp-wallet](https://github.com/Permissionless-Software-Foundation/minimal-slp-wallet) for the BCH blockchain. It's intended to be used with the [gatsby-ipfs-web-wallet](https://github.com/Permissionless-Software-Foundation/gatsby-ipfs-web-wallet) web-based wallet.
 
-- [Semantic Release](https://github.com/semantic-release/semantic-release) configured to work with [Travis CI](https://travis-ci.org/).
-- Automatic linting using [Standard](https://www.npmjs.com/package/standard) JavaScript.
-- Unit and integration tests using Mocha and Chai, following the best practices and design patterns in [this YouTube video](https://www.youtube.com/watch?v=lE3RYnchHps):
-  - Uses ECMAScript 2015 `Class` for business logic and utility libraries.
-  - Follows [TDD](https://builttoadapt.io/why-tdd-489fdcdda05e) best practices.
-  - Uses `_this` to maintain context to the instance of the class.
-  - Uses [Sinon stubs](https://sinonjs.org/releases/latest/stubs/) to mock external dependencies for unit tests.
-  - Each function is wrapped in try/catch statements, allowing thrown errors to 'bubble up' to the top-level function, and give every function along the way an opportunity to handle exceptions.
-  - Testing assertions focus on properties and structure, not values.
-
+The default derivation path for the wallet keypair is m/44'/?'/0'/0/0. This is the BIP44 standard for AVAX X-chain wallets.
 
 # Licence
+
 [MIT](LICENSE.md)
-
-
