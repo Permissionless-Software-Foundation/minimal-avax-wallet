@@ -43,6 +43,10 @@ class MinimalAvaxWallet {
     // Instantiate local libraries.
     this.create = new CreateLib(advancedOptions)
 
+    // walletInfoPromise will return a promise that will resolve to 'true'
+    // once the wallet has been created. The wallet information will be stored
+    // in walletInfo.
+    this.walletInfo = {} // Placeholder
     this.walletInfoCreated = false
     this.walletInfoPromise = this.createWallet(hdPrivateKeyOrMnemonic)
     // _this = this
@@ -67,7 +71,7 @@ class MinimalAvaxWallet {
 
       this.walletInfoCreated = true
       this.walletInfo = walletInfo
-      console.log(JSON.stringify(walletInfo, null, 2))
+      // console.log(JSON.stringify(walletInfo, null, 2))
 
       return true
     } catch (error) {
