@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "npm run lint && TEST=unit nyc mocha test/unit/",
+    "test": "npm run lint && set TEST=unit&& nyc mocha test/unit/",
     "test:integration": "mocha --timeout 25000 test/integration/",
     "lint": "standard --env mocha --fix",
     "docs": "./node_modules/.bin/apidoc -i src/ -o docs",
@@ -34,7 +34,8 @@
   "repository": "Permissionless-Software-Foundation/minimal-avax-wallet",
   "dependencies": {
     "@psf/bch-js": "^4.8.1",
-    "apidoc": "^0.25.0"
+    "apidoc": "^0.25.0",
+    "avalanche": "^3.8.5"
   },
   "devDependencies": {
     "chai": "^4.2.0",
