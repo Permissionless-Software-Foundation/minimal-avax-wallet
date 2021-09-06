@@ -1,6 +1,6 @@
 /*
   An npm JavaScript library for front end web apps. Implements a minimal
-  Bitcoin Cash wallet.
+  AVAX X-chain wallet.
 */
 
 /* eslint-disable no-async-promise-executor */
@@ -51,7 +51,7 @@ class MinimalAvaxWallet {
   async createWallet (key) {
     try {
       key = key || this.bip39.generateMnemonic(256)
-      key = key.replace(/\s+/ig, ' ')
+      key = key.replace(/\s+/gi, ' ')
       let walletInfo = {}
 
       if (this.create.checkString(key)) {
@@ -68,8 +68,10 @@ class MinimalAvaxWallet {
       this.walletInfoCreated = true
       this.walletInfo = walletInfo
       console.log(JSON.stringify(walletInfo, null, 2))
+
+      return true
     } catch (error) {
-      console.log(`Error on createLib/checkString(): ${error.message}`)
+      console.log(`Error on createWallet(): ${error.message}`)
       throw error
     }
   }

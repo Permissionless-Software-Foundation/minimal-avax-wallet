@@ -50,7 +50,8 @@ describe('#CreateLib', () => {
 
     it('should return a formated walled with type mnemonic', async () => {
       try {
-        const mnemonic = 'humor nature regret save degree lobster debris vocal cook dash switch ' +
+        const mnemonic =
+          'humor nature regret save degree lobster debris vocal cook dash switch ' +
           'try fluid sleep evil mosquito muscle race race nuclear foam toss gadget nominee'
         const wallet = await uut.fromMnemonic(mnemonic)
         assert.hasAllKeys(wallet, [
@@ -61,7 +62,10 @@ describe('#CreateLib', () => {
           'publicKey',
           'avax'
         ])
-        assert.equal(wallet.address, 'X-avax1v6hutycdrl5xys8g2hxqxltktx5ty5j0reyx45')
+        assert.equal(
+          wallet.address,
+          'X-avax1v6hutycdrl5xys8g2hxqxltktx5ty5j0reyx45'
+        )
         assert.equal(wallet.type, 'mnemonic')
         assert.equal(wallet.mnemonic, mnemonic)
       } catch (err) {
@@ -81,9 +85,11 @@ describe('#CreateLib', () => {
       }
     })
 
-    it('should return a formated walled with type privateKey', async () => {
+    it('should return a formated wallet with type privateKey', async () => {
       try {
-        const wallet = await uut.fromPrivateKey('PrivateKey-23E9Ttdziouo9m2V55vwVE8fnhNkCCdpGdoC7HfDmti5f4yShv')
+        const wallet = await uut.fromPrivateKey(
+          'PrivateKey-23E9Ttdziouo9m2V55vwVE8fnhNkCCdpGdoC7HfDmti5f4yShv'
+        )
         assert.hasAllKeys(wallet, [
           'type',
           'mnemonic',
@@ -93,7 +99,10 @@ describe('#CreateLib', () => {
           'avax'
         ])
 
-        assert.equal(wallet.address, 'X-avax1u6pvrj20s7vjw0j9mc5ms2as7wdan77z2e9a27')
+        assert.equal(
+          wallet.address,
+          'X-avax1u6pvrj20s7vjw0j9mc5ms2as7wdan77z2e9a27'
+        )
         assert.equal(wallet.type, 'privateKey')
         assert.equal(wallet.mnemonic, '')
       } catch (err) {
@@ -103,9 +112,14 @@ describe('#CreateLib', () => {
 
     it('should work even if the word private key is missing', async () => {
       try {
-        const wallet = await uut.fromPrivateKey('23E9Ttdziouo9m2V55vwVE8fnhNkCCdpGdoC7HfDmti5f4yShv')
+        const wallet = await uut.fromPrivateKey(
+          '23E9Ttdziouo9m2V55vwVE8fnhNkCCdpGdoC7HfDmti5f4yShv'
+        )
 
-        assert.equal(wallet.address, 'X-avax1u6pvrj20s7vjw0j9mc5ms2as7wdan77z2e9a27')
+        assert.equal(
+          wallet.address,
+          'X-avax1u6pvrj20s7vjw0j9mc5ms2as7wdan77z2e9a27'
+        )
       } catch (err) {
         assert.fail('Unexpected result')
       }
@@ -124,7 +138,8 @@ describe('#CreateLib', () => {
 
     it('should return false if mnemonic phrase is passed', async () => {
       try {
-        const mnemonic = 'humor nature regret save degree lobster debris vocal cook dash switch ' +
+        const mnemonic =
+          'humor nature regret save degree lobster debris vocal cook dash switch ' +
           'try fluid sleep evil mosquito muscle race race nuclear foam toss gadget nominee'
         const res = await uut.checkString(mnemonic)
         assert.isFalse(res)
@@ -135,7 +150,9 @@ describe('#CreateLib', () => {
 
     it('should return true if private key is passed', async () => {
       try {
-        const res = await uut.checkString('PrivateKey-23E9Ttdziouo9m2V55vwVE8fnhNkCCdpGdoC7HfDmti5f4yShv')
+        const res = await uut.checkString(
+          'PrivateKey-23E9Ttdziouo9m2V55vwVE8fnhNkCCdpGdoC7HfDmti5f4yShv'
+        )
         assert.isTrue(res)
       } catch (err) {
         assert.fail('Unexpected result')
