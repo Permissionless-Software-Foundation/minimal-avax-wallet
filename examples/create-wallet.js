@@ -1,20 +1,23 @@
 /*
   An example app for creating a wallet using this library.
+
+  This wallet can be imported into the AVAX web wallet:
+  https://wallet.avax.network
 */
 
-const BchWallet = require('../index')
+const AvaxWallet = require('../index')
 
 async function createWallet () {
   try {
     // Instantiate the wallet library.
-    const bchWallet = new BchWallet()
+    const avaxWallet = new AvaxWallet()
 
     // Wait for the wallet to be created.
-    await bchWallet.walletInfoPromise
+    await avaxWallet.walletInfoPromise
 
     // Print out the wallet information.
     console.log(
-      `Wallet information: ${JSON.stringify(bchWallet.walletInfo, null, 2)}`
+      `Wallet information: ${JSON.stringify(avaxWallet.walletInfo, null, 2)}`
     )
   } catch (err) {
     console.error('Error: ', err)
