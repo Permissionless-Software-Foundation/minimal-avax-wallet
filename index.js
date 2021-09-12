@@ -30,14 +30,14 @@ class MinimalAvaxWallet {
 
     // Encapsulae the external libraries.
     this.ava = new Avalanche(this.host, this.port, this.protocol)
-    this.binTools = BinTools.getInstance()
+    this.bintools = BinTools.getInstance()
     this.BN = BN
     this.bip39 = bip39
 
     this.util = util
 
     advancedOptions.ava = this.ava
-    advancedOptions.binTools = this.binTools
+    advancedOptions.bintools = this.bintools
     advancedOptions.BN = this.BN
 
     // Instantiate local libraries.
