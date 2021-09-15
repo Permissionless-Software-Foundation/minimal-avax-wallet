@@ -15,6 +15,8 @@ const util = new Util()
 
 // Local libraries
 const CreateLib = require('./lib/create')
+const UTXOs = require('./lib/utxo')
+const AdapterRouter = require('./lib/adapter/router')
 
 // let _this // local global for 'this'.
 
@@ -40,8 +42,14 @@ class MinimalAvaxWallet {
     advancedOptions.bintools = this.bintools
     advancedOptions.BN = this.BN
 
+    // The adapter router is used to route network calls through the appropriate
+    // network medium (http or IPFS)
+    this.ar = new AdapterRouter(advancedOptions)
+    advancedOptions.ar = this.ar
+
     // Instantiate local libraries.
     this.create = new CreateLib(advancedOptions)
+    this.utxos = new UTXOs(advancedOptions)
 
     // walletInfoPromise will return a promise that will resolve to 'true'
     // once the wallet has been created. The wallet information will be stored
@@ -64,10 +72,10 @@ class MinimalAvaxWallet {
         walletInfo = await this.create.fromMnemonic(key)
       }
 
-      // if (!this.noUpdate) {
-      //   // Get any  UTXOs for this address.
-      //   await this.utxos.getUTXOs(walletInfo.address)
-      // }
+      if (!this.noUpdate) {
+        // Get any  UTXOs for this address.
+        await this.utxos.getUTXOs(walletInfo.address)
+      }
 
       this.walletInfoCreated = true
       this.walletInfo = walletInfo
@@ -78,6 +86,11 @@ class MinimalAvaxWallet {
       console.log(`Error on createWallet(): ${error.message}`)
       throw error
     }
+  }
+
+  // Get the UTXO information for this wallet.
+  getUtxos () {
+    return this.utxos.initUtxoStore(this.walletInfo.address)
   }
 }
 

@@ -10,7 +10,8 @@
     "lint": "standard --env mocha --fix",
     "docs": "./node_modules/.bin/apidoc -i src/ -o docs",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "coverage:report": "nyc --reporter=html mocha test/unit/ --exit"
+    "coverage:report": "nyc --reporter=html mocha test/unit/ --exit",
+    "build": "browserify index.js -p tinyify --s AvaxWallet -o dist/minimal-avax-wallet.min.js"
   },
   "keywords": [
     "bitcoin",
@@ -38,6 +39,7 @@
     "avalanche": "^3.8.5"
   },
   "devDependencies": {
+    "browserify": "^17.0.0",
     "chai": "^4.2.0",
     "coveralls": "^3.1.0",
     "eslint": "7.17.0",
@@ -52,7 +54,8 @@
     "nyc": "^15.1.0",
     "semantic-release": "^17.4.2",
     "sinon": "^9.2.2",
-    "standard": "^16.0.3"
+    "standard": "^16.0.3",
+    "tinyify": "^3.0.0"
   },
   "release": {
     "publish": [

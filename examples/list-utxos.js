@@ -1,10 +1,10 @@
 /*
-  An example for listing the tokens and token balances of the wallet.
+  An example for listing the UTXOs held by a wallet.
 */
 
 const Wallet = require('../index')
 
-async function listTokens () {
+async function listUtxos () {
   try {
     // Replace the values for the constants below to customize for your use.
     const MNEMONIC =
@@ -17,10 +17,10 @@ async function listTokens () {
     await wallet.walletInfoPromise
 
     // Get the token summary
-    const tokenInfo = await wallet.listTokens()
-    console.log(`tokenInfo: ${JSON.stringify(tokenInfo, null, 2)}`)
+    const utxoInfo = await wallet.getUtxos()
+    console.log(`utxoInfo: ${JSON.stringify(utxoInfo, null, 2)}`)
   } catch (err) {
     console.error('Error: ', err)
   }
 }
-listTokens()
+listUtxos()

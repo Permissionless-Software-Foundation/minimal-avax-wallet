@@ -39,7 +39,10 @@ describe('#AdapterRouter', () => {
         uut = new AdapterRouter()
         assert.fail('Unexpected result')
       } catch (err) {
-        assert.include(err.message, 'Must pass instance of avalanche ont AdapterRouter constructor')
+        assert.include(
+          err.message,
+          'Must pass instance of avalanche to AdapterRouter constructor'
+        )
       }
     })
   })
@@ -56,7 +59,9 @@ describe('#AdapterRouter', () => {
 
     it('should return a collection of UTXOs', async () => {
       try {
-        sandbox.stub(uut.xchain, 'getUTXOs').resolves({ utxos: mockData.utxoSet })
+        sandbox
+          .stub(uut.xchain, 'getUTXOs')
+          .resolves({ utxos: mockData.utxoSet })
 
         const utxos = await uut.getUTXOs(mockData.addressString)
         assert.isTrue(Array.isArray(utxos))
@@ -162,7 +167,9 @@ describe('#AdapterRouter', () => {
 
     it('should return the avax asset details', async () => {
       try {
-        sandbox.stub(uut.xchain, 'getAssetDescription').resolves(mockData.assetDescription)
+        sandbox
+          .stub(uut.xchain, 'getAssetDescription')
+          .resolves(mockData.assetDescription)
 
         const description = await uut.getAssetDescription(mockData.avaxID)
         assert.isObject(description)
