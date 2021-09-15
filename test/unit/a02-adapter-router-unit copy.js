@@ -109,7 +109,7 @@ describe('#AdapterRouter', () => {
 
     it('should return a collection of object with assetID and amount', async () => {
       try {
-        sandbox.stub(uut.xchain, 'getBalance').resolves(mockData.balances)
+        sandbox.stub(uut.xchain, 'getAllBalances').resolves(mockData.balances)
 
         const balance = await uut.getBalance(mockData.addressString)
         assert.isTrue(Array.isArray(balance))
