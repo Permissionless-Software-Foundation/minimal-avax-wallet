@@ -21,7 +21,7 @@ describe('#CreateLib', () => {
 
     const config = {
       ava: new Avalanche('api.avax.network', 443, 'https'),
-      binTools: BinTools.getInstance()
+      bintools: BinTools.getInstance()
     }
 
     uut = new CreateLib(config)
