@@ -101,6 +101,19 @@ class MinimalAvaxWallet {
   getUtxos () {
     return this.utxos.initUtxoStore(this.walletInfo.address)
   }
+
+  send (outputs) {
+    try {
+      return this.send.sendAvax(
+        outputs,
+        this.walletInfo,
+        this.utxos.utxoStore
+      )
+    } catch (err) {
+      console.error('Error in send()')
+      throw err
+    }
+  }
 }
 
 module.exports = MinimalAvaxWallet
