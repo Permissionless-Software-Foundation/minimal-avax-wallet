@@ -88,6 +88,15 @@ class MinimalAvaxWallet {
     }
   }
 
+  // Get transactions associated with an address or the default avax address.
+  async getTransactions (address) {
+    const avaxAddr = address || this.walletInfo.address
+    const txs = await this.ar.getTransactions(avaxAddr)
+
+    const history = txs.map(tx => tx.id)
+    return history
+  }
+
   // Get the UTXO information for this wallet.
   getUtxos () {
     return this.utxos.initUtxoStore(this.walletInfo.address)

@@ -15,7 +15,7 @@ const AdapterRouter = require('../../lib/adapter/router')
 /** @type {UTXOLib} */
 let uut // Unit Under Test
 
-describe('#AdapterRouter', () => {
+describe('#UTXOLib', () => {
   let sandbox
   let mockData
 

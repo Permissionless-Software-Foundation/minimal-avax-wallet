@@ -266,4 +266,72 @@ describe('#AdapterRouter', () => {
       }
     })
   })
+
+  describe('#getTransactions', () => {
+    it('should catch and throw errors if address is not string', async () => {
+      try {
+        const addr = ''
+
+        await uut.getTransactions(addr)
+
+        assert.fail('Unexpected result')
+      } catch (err) {
+        assert.include(err.message, 'is not valid')
+      }
+    })
+
+    it('should get the transaction hostory for a given address', async () => {
+      sandbox
+        .stub(uut.axios, 'post')
+        .resolves({ status: 200, data: { transactions: mockData.transactions } })
+
+      const txHistory = await uut.getTransactions(mockData.addressString)
+
+      assert.isArray(txHistory)
+    })
+
+    it('should throw errors if axios returns an invalid status (>400)', async () => {
+      try {
+        // Force an error
+        sandbox
+          .stub(uut.axios, 'post')
+          .resolves({ status: 400 })
+
+        await uut.getTransactions(mockData.addressString)
+
+        assert.fail('Unexpected result')
+      } catch (err) {
+        assert.include(err.message, 'No transaction history could be found')
+      }
+    })
+
+    it('should return the transaction history using the JSON RPC', async () => {
+      const config = {
+        ava: new Avalanche('api.avax.network', 443, 'https'),
+        bintools: BinTools.getInstance(),
+        interface: 'json-rpc'
+      }
+
+      uut = new AdapterRouter(config)
+
+      try {
+        const txHistory = await uut.getTransactions(mockData.addressString)
+        assert.isArray(txHistory)
+      } catch (err) {
+        console.log(err)
+        assert.fail('Unexpected result')
+      }
+    })
+
+    it('should throw an error if the interface is not defined or unknown', async () => {
+      uut.interface = 'random'
+
+      try {
+        await uut.getTransactions(mockData.addressString)
+        assert.fail('Unexpected result')
+      } catch (err) {
+        assert.include(err.message, 'this.interface is not specified')
+      }
+    })
+  })
 })
