@@ -29,6 +29,19 @@ const utxoJSON = {
   typeID: 7
 }
 
+const arepaUtxoJSON = {
+  txid: '2qD6DQHDgs7xorUaqgWQRgoQSoQL6zRDhLe1NqpbfQVz29dnWc',
+  outputIdx: '00000000',
+  amount: 390,
+  assetID: '2jgTFB6MM4vwLzUNWFYGPfyeQfpLaEqj4XWku6FoW7vaGrrEd5',
+  typeID: 7
+}
+
+const mockWallet = {
+  privateKey: 'PrivateKey-23E9Ttdziouo9m2V55vwVE8fnhNkCCdpGdoC7HfDmti5f4yShv',
+  address: 'X-avax1u6pvrj20s7vjw0j9mc5ms2as7wdan77z2e9a27'
+}
+
 const codecID = bintools.fromBNToBuffer(new BN(0))
 const utxos = [
   new avm.UTXO(
@@ -299,5 +312,7 @@ module.exports = {
   avaxID,
   utxoJSON,
   transactions,
+  arepaUtxoJSON,
+  mockWallet,
   txid
 }
