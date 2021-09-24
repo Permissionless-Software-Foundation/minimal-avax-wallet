@@ -18,6 +18,7 @@ const CreateLib = require('./lib/create')
 const UTXOs = require('./lib/utxo')
 const AdapterRouter = require('./lib/adapter/router')
 const Send = require('./lib/send')
+const Tokens = require('./lib/tokens')
 
 // let _this // local global for 'this'.
 
@@ -53,6 +54,7 @@ class MinimalAvaxWallet {
     this.utxos = new UTXOs(advancedOptions)
     advancedOptions.utxos = this.utxos
     this.sendAvax = new Send(advancedOptions)
+    this.tokens = new Tokens(advancedOptions)
 
     // walletInfoPromise will return a promise that will resolve to 'true'
     // once the wallet has been created. The wallet information will be stored
@@ -114,6 +116,20 @@ class MinimalAvaxWallet {
       )
     } catch (err) {
       console.error('Error in send()')
+      throw err
+    }
+  }
+
+  burnTokens (amount, assetId) {
+    try {
+      return this.tokens.burnTokens(
+        amount,
+        assetId,
+        this.walletInfo,
+        this.utxos.utxoStore
+      )
+    } catch (err) {
+      console.error('Error in burnTokens()')
       throw err
     }
   }
