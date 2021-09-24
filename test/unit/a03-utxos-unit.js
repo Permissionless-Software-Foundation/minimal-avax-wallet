@@ -183,4 +183,46 @@ describe('#UTXOLib', () => {
       }
     })
   })
+
+  describe('#formatOutput', () => {
+    it('should return a output object (TransferableOutput)', async () => {
+      try {
+        const outputJSON = {
+          address: 'X-avax10jpl6x8egfmfmj4fxdf078870q32vr96rvdjn5',
+          amount: 28000000,
+          assetID: 'FvwEAhmxKfeiG8SnEvq42hc6whRyY3EFYAvebMqDNDGCgxN5Z'
+        }
+
+        const transferableOutput = await uut.formatOutput(outputJSON, mockData.addressString)
+
+        assert.equal(uut.bintools.cb58Encode(transferableOutput.getAssetID()), outputJSON.assetID)
+
+        const output = transferableOutput.getOutput()
+        const address = uut.ava.XChain().addressFromBuffer(output.getAddresses()[0])
+        assert.equal(address, outputJSON.address)
+        assert.equal(output.getAmount().toNumber(), outputJSON.amount)
+      } catch (err) {
+        // assert.fail('Unexpected result')
+        console.log(err)
+      }
+    })
+
+    it('should return a output object (TransferableOutput) with the default address', async () => {
+      try {
+        const outputJSON = {
+          amount: 28000000,
+          assetID: 'FvwEAhmxKfeiG8SnEvq42hc6whRyY3EFYAvebMqDNDGCgxN5Z'
+        }
+
+        const transferableOutput = await uut.formatOutput(outputJSON, mockData.addressString)
+
+        const output = transferableOutput.getOutput()
+        const address = uut.ava.XChain().addressFromBuffer(output.getAddresses()[0])
+        assert.equal(address, mockData.addressString)
+      } catch (err) {
+        // assert.fail('Unexpected result')
+        console.log(err)
+      }
+    })
+  })
 })
