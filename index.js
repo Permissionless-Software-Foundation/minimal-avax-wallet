@@ -107,6 +107,10 @@ class MinimalAvaxWallet {
     return this.utxos.initUtxoStore(this.walletInfo.address)
   }
 
+  listAssets () {
+    return this.utxos.getBalance(this.walletInfo.address)
+  }
+
   send (outputs) {
     try {
       return this.sendAvax.sendAvax(
