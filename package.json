@@ -36,7 +36,7 @@
   "dependencies": {
     "@psf/bch-js": "^4.8.1",
     "apidoc": "^0.25.0",
-    "avalanche": "^3.8.5",
+    "avalanche": "~3.8.5",
     "axios": "^0.21.1"
   },
   "devDependencies": {
