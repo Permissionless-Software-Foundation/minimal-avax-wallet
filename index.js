@@ -19,6 +19,7 @@ const UTXOs = require('./lib/utxo')
 const AdapterRouter = require('./lib/adapter/router')
 const Send = require('./lib/send')
 const Tokens = require('./lib/tokens')
+const crypto = require('crypto-js')
 
 // let _this // local global for 'this'.
 
@@ -37,6 +38,7 @@ class MinimalAvaxWallet {
     this.bintools = BinTools.getInstance()
     this.BN = BN
     this.bip39 = bip39
+    this.crypto = crypto
 
     this.util = util
 
@@ -136,6 +138,26 @@ class MinimalAvaxWallet {
       console.error('Error in burnTokens()')
       throw err
     }
+  }
+
+  // Encrypt the mnemonic of the wallet.
+  encrypt (mnemonic, password) {
+    return this.crypto.AES.encrypt(mnemonic, password).toString()
+  }
+
+  // Decrypt the mnemonic of the wallet.
+  decrypt (mnemonicEncrypted, password) {
+    let mnemonic
+
+    try {
+      mnemonic = this.crypto.AES.decrypt(mnemonicEncrypted, password).toString(
+        this.crypto.enc.Utf8
+      )
+    } catch (err) {
+      throw new Error('Wrong password')
+    }
+
+    return mnemonic
   }
 }
 
