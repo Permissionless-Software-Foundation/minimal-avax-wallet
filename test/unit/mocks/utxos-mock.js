@@ -15,7 +15,7 @@ const avaxIDBuffer = bintools.cb58Decode(avaxID)
 const assetDescription = {
   name: 'Avalanche',
   symbol: 'AVAX',
-  assetID: avaxID,
+  assetID: avaxIDBuffer,
   denomination: 9
 }
 
