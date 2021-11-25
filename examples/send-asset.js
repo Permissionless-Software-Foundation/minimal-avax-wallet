@@ -2,9 +2,13 @@
   An example for sending ANT with this library.
 */
 
+const network = 'mainnet'
+// const network = 'fuji'
+
+const networks = require('../lib/networks')
 const Wallet = require('../index')
 
-async function sendAvax () {
+async function sendAsset () {
   try {
     // Replace the values for the constants below to customize for your use.
     const mnemonic =
@@ -14,9 +18,10 @@ async function sendAvax () {
     const RECIEVER = ''
 
     const ASSET_AMOUNT = 190
+    // const assetID = 'U8iRqJoiJm8xZHAacmvYyZVwqQx6uDNtQeP3CQ6fcgQk3JqnK' //fuji
     const assetID = '2jgTFB6MM4vwLzUNWFYGPfyeQfpLaEqj4XWku6FoW7vaGrrEd5'
 
-    const wallet = new Wallet(mnemonic)
+    const wallet = new Wallet(mnemonic, networks[network])
     await wallet.walletInfoPromise
 
     const outputs = []
@@ -31,4 +36,4 @@ async function sendAvax () {
     console.error('Error: ', err)
   }
 }
-sendAvax()
+sendAsset()

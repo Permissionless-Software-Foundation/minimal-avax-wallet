@@ -5,12 +5,16 @@
   https://wallet.avax.network
 */
 
+const network = 'mainnet'
+// const network = 'fuji'
+
+const networks = require('../lib/networks')
 const AvaxWallet = require('../index')
 
 async function createWallet () {
   try {
     // Instantiate the wallet library.
-    const avaxWallet = new AvaxWallet()
+    const avaxWallet = new AvaxWallet(null, networks[network])
 
     // Wait for the wallet to be created.
     await avaxWallet.walletInfoPromise
