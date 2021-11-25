@@ -2,6 +2,10 @@
   An example for listing the UTXOs held by a wallet.
 */
 
+const network = 'mainnet'
+// const network = 'fuji'
+
+const networks = require('../lib/networks')
 const Wallet = require('../index')
 
 async function listUtxos () {
@@ -11,7 +15,7 @@ async function listUtxos () {
       'major silly fly prison clerk sense tell vehicle detail captain machine sheriff peasant border admit indoor pill come buyer deny orange mansion bag accuse'
 
     // Instantiate the wallet library.
-    const wallet = new Wallet(mnemonic)
+    const wallet = new Wallet(mnemonic, networks[network])
 
     // Wait for the wallet to be created.
     await wallet.walletInfoPromise

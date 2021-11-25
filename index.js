@@ -28,13 +28,14 @@ class MinimalAvaxWallet {
     this.host = advancedOptions.host || 'api.avax.network'
     this.port = advancedOptions.port || 443
     this.protocol = advancedOptions.protocol || 'https'
+    this.networkID = advancedOptions.networkID || 1
 
     // Allow passing of noUpdate flag, to prevent automatic UTXO retrieval
     // after wallet is created.
     this.noUpdate = Boolean(advancedOptions.noUpdate)
 
     // Encapsulae the external libraries.
-    this.ava = new Avalanche(this.host, this.port, this.protocol)
+    this.ava = new Avalanche(this.host, this.port, this.protocol, this.networkID)
     this.bintools = BinTools.getInstance()
     this.BN = BN
     this.bip39 = bip39

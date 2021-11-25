@@ -2,6 +2,10 @@
   An example for sending AVAX with this library.
 */
 
+const network = 'mainnet'
+// const network = 'fuji'
+
+const networks = require('../lib/networks')
 const Wallet = require('../index')
 
 async function sendAvax () {
@@ -16,7 +20,7 @@ async function sendAvax () {
     // 1 nAVAX is equal to 0.000000001 AVAX
     const NAVAX_TO_SEND = 10000000
 
-    const wallet = new Wallet(mnemonic)
+    const wallet = new Wallet(mnemonic, networks[network])
     await wallet.walletInfoPromise
 
     const outputs = []
