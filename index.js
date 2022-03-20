@@ -68,6 +68,7 @@ class MinimalAvaxWallet {
     // _this = this
   }
 
+  /** Create a new wallet from a privateKey or a mnemonic key word */
   async createWallet (key) {
     try {
       key = key || this.bip39.generateMnemonic(256)
@@ -96,7 +97,7 @@ class MinimalAvaxWallet {
     }
   }
 
-  // Get transactions associated with an address or the default avax address.
+  /** Get transactions associated with an address or the default avax address. */
   async getTransactions (address) {
     const avaxAddr = address || this.walletInfo.address
     const txs = await this.ar.getTransactions(avaxAddr)
@@ -105,15 +106,17 @@ class MinimalAvaxWallet {
     return history
   }
 
-  // Get the UTXO information for this wallet.
+  /** Get the UTXO information for this wallet. */
   getUtxos () {
     return this.utxos.initUtxoStore(this.walletInfo.address)
   }
 
+  /** Print all the assets held by this wallet */
   listAssets () {
     return this.utxos.getBalance(this.walletInfo.address)
   }
 
+  /** Send AVAX or any ANT */
   send (outputs) {
     try {
       return this.sendAvax.sendAvax(
@@ -127,6 +130,7 @@ class MinimalAvaxWallet {
     }
   }
 
+  /** Burn AVAX or any ANT */
   burnTokens (amount, assetId) {
     try {
       return this.tokens.burnTokens(
@@ -141,12 +145,26 @@ class MinimalAvaxWallet {
     }
   }
 
-  // Encrypt the mnemonic of the wallet.
+  /** Send NFT to a given address */
+  sendNFT (outputs) {
+    try {
+      return this.sendAvax.sendNFT(
+        outputs,
+        this.walletInfo,
+        this.utxos.utxoStore
+      )
+    } catch (err) {
+      console.error('Error in sendNFT()')
+      throw err
+    }
+  }
+
+  /** Encrypt the mnemonic of the wallet. */
   encrypt (mnemonic, password) {
     return this.crypto.AES.encrypt(mnemonic, password).toString()
   }
 
-  // Decrypt the mnemonic of the wallet.
+  /** Decrypt the mnemonic of the wallet. */
   decrypt (mnemonicEncrypted, password) {
     let mnemonic
 

@@ -19,6 +19,14 @@ const assetDescription = {
   denomination: 9
 }
 
+const nftDescription = {
+  assetID: 'CuTnDJAVFSea6VzEj8UXieWmdrANzyFfL3Cge7XyHbT5RsXn1',
+  name: 'Bikes',
+  symbol: 'BYK',
+  denomination: 0,
+  amount: 1
+}
+
 const balances = [{ asset: 'AVAX', balance: '1001000000' }]
 
 const utxoJSON = {
@@ -35,6 +43,18 @@ const arepaUtxoJSON = {
   amount: 390,
   assetID: '2jgTFB6MM4vwLzUNWFYGPfyeQfpLaEqj4XWku6FoW7vaGrrEd5',
   typeID: 7
+}
+
+const nftUtxoJSON = {
+  txid: 'Cf4Hijr16BdAtA7itDbEYDse5i7VmhESAERJzkvnzfkjcZaTi',
+  outputIdx: '00000000',
+  amount: 1,
+  assetID: 'CuTnDJAVFSea6VzEj8UXieWmdrANzyFfL3Cge7XyHbT5RsXn1',
+  typeID: 11,
+  payload: '414XoNaDow5F8cx1qMQ44W4HUxmyg1aMLaq7NwuGX6s5iisaTydkSszyYTZRRRrvwtQDCT' +
+    'j2niF8PPh7VxBzuVTKcMhSjQrMCoCgs3A4aCLDVjcftVejURyMzcNNaMbdZpL2BSe7GF8R' +
+    'aYKRpsAC8soLbSgksw4v1Y76CyBmcpL6sQ3zZejh56KwZMU5TrydD8PrxbQ64w14c',
+  groupID: 0
 }
 
 const mockWallet = {
@@ -308,11 +328,13 @@ module.exports = {
   utxoSet,
   balances,
   assetDescription,
+  nftDescription,
   addressString,
   avaxID,
   utxoJSON,
   transactions,
   arepaUtxoJSON,
+  nftUtxoJSON,
   mockWallet,
   txid
 }

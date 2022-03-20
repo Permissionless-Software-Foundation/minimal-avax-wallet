@@ -130,7 +130,6 @@ describe('#SendLib', () => {
 
         assert.equal(inputs.length, 1)
         assert.equal(inputs[0].assetID, mockData.avaxID)
-        console.log(change)
         assert.equal(change.length, 0)
       } catch (err) {
         console.log(err)
@@ -182,7 +181,11 @@ describe('#SendLib', () => {
           assetID: mockData.avaxID
         }]
 
-        const baseTx = uut.createTransaction(outputs, mockData.mockWallet, [mockData.utxoJSON, mockData.arepaUtxoJSON])
+        const baseTx = uut.createTransaction(
+          outputs,
+          mockData.mockWallet,
+          [mockData.utxoJSON, mockData.arepaUtxoJSON]
+        )
 
         assert.isString(baseTx)
       } catch (err) {
@@ -199,9 +202,77 @@ describe('#SendLib', () => {
           assetID: mockData.arepaUtxoJSON.assetID
         }]
 
-        const baseTx = uut.createTransaction(outputs, mockData.mockWallet, [mockData.utxoJSON, mockData.arepaUtxoJSON])
+        const baseTx = uut.createTransaction(
+          outputs,
+          mockData.mockWallet,
+          [mockData.utxoJSON, mockData.arepaUtxoJSON]
+        )
 
         assert.isString(baseTx)
+      } catch (err) {
+        console.log(err)
+        assert.fail('Unexpected result')
+      }
+    })
+  })
+
+  describe('#createNFTTransaction', () => {
+    it('should throw an error if the utxo argument is not an array or is empty', () => {
+      try {
+        uut.createNFTTransaction(null)
+        assert.fail('Unexpected result')
+      } catch (err) {
+        assert.include(err.message, 'UTXO list is empty')
+      }
+    })
+
+    it('should throw an error if the outputs argument is not an array or is empty', () => {
+      try {
+        uut.createNFTTransaction([], mockData.mockWallet, [mockData.utxoJSON])
+        assert.fail('Unexpected result')
+      } catch (err) {
+        assert.include(err.message, 'outputs list is empty')
+      }
+    })
+
+    it('should throw an error if the NFT is not held by the wallet', () => {
+      try {
+        const outputs = [{
+          address: 'X-avax1anlgfmys9m7fcu5frkdnga6eajka37lzem8wp4',
+          assetID: 'CuTnDJAVFSea6VzEj8UXieWmdrANzyFfL3Cge7XyHbT5RsXn1'
+        }]
+
+        uut.createNFTTransaction(
+          outputs,
+          mockData.mockWallet,
+          [mockData.utxoJSON]
+        )
+
+        assert.fail('Unexpected result')
+      } catch (err) {
+        assert.include(err.message, 'NFT with assetID')
+      }
+    })
+
+    it('should return an operation Tx as string', () => {
+      try {
+        const outputs = [{
+          address: 'X-avax1anlgfmys9m7fcu5frkdnga6eajka37lzem8wp4',
+          assetID: 'CuTnDJAVFSea6VzEj8UXieWmdrANzyFfL3Cge7XyHbT5RsXn1'
+        }]
+
+        const operationTx = uut.createNFTTransaction(
+          outputs,
+          mockData.mockWallet,
+          [mockData.utxoJSON, mockData.nftUtxoJSON]
+        )
+
+        assert.isString(operationTx)
+        const opTx = new uut.avm.Tx()
+        opTx.fromString(operationTx)
+        const tx = opTx.getUnsignedTx().getTransaction()
+        assert.equal(tx.getTypeName(), 'OperationTx')
+        assert.equal(tx.getOperations().length, 1)
       } catch (err) {
         console.log(err)
         assert.fail('Unexpected result')
@@ -223,13 +294,42 @@ describe('#SendLib', () => {
       try {
         sandbox.stub(uut.ar, 'issueTx').resolves('sometxid')
 
-        const outputs = [{
-          address: 'X-avax10jpl6x8egfmfmj4fxdf078870q32vr96rvdjn5',
-          amount: 5000000,
-          assetID: mockData.avaxID
-        }]
+        const outputs = [{ address: 'X-avax10jpl6x8egfmfmj4fxdf078870q32vr96rvdjn5', amount: 5000000 }]
 
         const txid = await uut.sendAvax(outputs, mockData.mockWallet, [mockData.utxoJSON, mockData.arepaUtxoJSON])
+
+        assert.equal(txid, 'sometxid')
+      } catch (err) {
+        console.log(err)
+        assert.fail('Unexpected result')
+      }
+    })
+  })
+
+  describe('#sendNFT', () => {
+    it('should throw and catch an error', async () => {
+      try {
+        await uut.sendNFT(null)
+        assert.fail('Unexpected result')
+      } catch (err) {
+        assert.include(err.message, 'UTXO list is empty')
+      }
+    })
+
+    it('should broadcast the Tx', async () => {
+      try {
+        sandbox.stub(uut.ar, 'issueTx').resolves('sometxid')
+
+        const outputs = [{
+          address: 'X-avax1anlgfmys9m7fcu5frkdnga6eajka37lzem8wp4',
+          assetID: 'CuTnDJAVFSea6VzEj8UXieWmdrANzyFfL3Cge7XyHbT5RsXn1'
+        }]
+
+        const txid = await uut.sendNFT(
+          outputs,
+          mockData.mockWallet,
+          [mockData.nftUtxoJSON, mockData.utxoJSON]
+        )
 
         assert.equal(txid, 'sometxid')
       } catch (err) {
