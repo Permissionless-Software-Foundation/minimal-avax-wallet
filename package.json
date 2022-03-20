@@ -36,12 +36,12 @@
   },
   "repository": "Permissionless-Software-Foundation/minimal-avax-wallet",
   "dependencies": {
-    "@psf/bch-js": "^4.8.1",
-    "apidoc": "^0.25.0",
+    "@psf/bch-js": "6.2.1",
+    "apidoc": "0.25.0",
     "avalanche": "3.12.1",
-    "axios": "^0.21.1",
-    "crypto-js": "^4.1.1",
-    "ws": "^8.5.0"
+    "axios": "0.26.1",
+    "crypto-js": "4.1.1",
+    "ws": "8.5.0"
   },
   "devDependencies": {
     "browserify": "^17.0.0",
