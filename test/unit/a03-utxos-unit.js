@@ -127,6 +127,54 @@ describe('#UTXOLib', () => {
         assert.fail('Unexpected result')
       }
     })
+
+    it('should take into account the NFT as well', async () => {
+      try {
+        sandbox.stub(uut.ar.xchain, 'getAllBalances').resolves(mockData.balances)
+        const stub = sandbox.stub(uut.ar.xchain, 'getAssetDescription')
+
+        stub.onCall(0)
+          .resolves(mockData.assetDescription)
+
+        stub.onCall(1)
+          .resolves(mockData.nftDescription)
+
+        uut.utxoStore = [mockData.nftUtxoJSON]
+        const balances = await uut.getBalance(mockData.addressString)
+        assert.isTrue(Array.isArray(balances))
+        assert.hasAllKeys(balances[1], [
+          'assetID',
+          'name',
+          'symbol',
+          'denomination',
+          'amount',
+          'isNFT'
+        ])
+      } catch (err) {
+        console.log(err)
+        assert.fail('Unexpected result')
+      }
+    })
+  })
+
+  describe('#getUtxoid', () => {
+    it('should return the UTXOID', async () => {
+      const id = uut.getUtxoid(
+        mockData.nftUtxoJSON.txid,
+        mockData.nftUtxoJSON.outputIdx
+      )
+
+      assert.equal(id, 'Cf4Hijr16BdAtA7itDbEYDse5i7VmhESAERJzkvnzfkhtyMC3')
+    })
+
+    it('should turn the vout into a number and return the UTXOID', async () => {
+      const id = uut.getUtxoid(
+        mockData.nftUtxoJSON.txid,
+        +mockData.nftUtxoJSON.outputIdx
+      )
+
+      assert.equal(id, 'Cf4Hijr16BdAtA7itDbEYDse5i7VmhESAERJzkvnzfkhtyMC3')
+    })
   })
 
   describe('#encodeUtxo', () => {
@@ -142,10 +190,54 @@ describe('#UTXOLib', () => {
     })
   })
 
+  describe('#encodeNFT', () => {
+    it('should return a valid UTXO with a NFTTransferOutput', async () => {
+      try {
+        const utxo = await uut.encodeNFT(mockData.nftUtxoJSON, mockData.addressString)
+
+        assert.isTrue(utxo instanceof uut.avm.UTXO)
+
+        const output = utxo.getOutput()
+        assert.isTrue(output instanceof uut.avm.NFTTransferOutput)
+
+        const assetID = uut.bintools.cb58Encode(utxo.getAssetID())
+        assert.equal(assetID, mockData.nftUtxoJSON.assetID)
+      } catch (err) {
+        console.log(err)
+        assert.fail('Unexpected result')
+      }
+    })
+  })
+
+  describe('#encodeNFTOperation', () => {
+    it('should return a valid TransferableOperation to add to a transaction', async () => {
+      try {
+        const transferable = await uut.encodeNFTOperation(
+          mockData.nftUtxoJSON,
+          {
+            fromAddress: mockData.addressString,
+            toAddress: 'X-avax1anlgfmys9m7fcu5frkdnga6eajka37lzem8wp4'
+          }
+        )
+
+        assert.isTrue(transferable instanceof uut.avm.TransferableOperation)
+
+        const operation = transferable.getOperation()
+        assert.isTrue(operation instanceof uut.avm.NFTTransferOperation)
+
+        const assetID = uut.bintools.cb58Encode(transferable.getAssetID())
+        assert.equal(assetID, mockData.nftUtxoJSON.assetID)
+      } catch (err) {
+        console.log(err)
+        assert.fail('Unexpected result')
+      }
+    })
+  })
+
   describe('#decodeUtxo', () => {
     it('should return a valid JSON', async () => {
       try {
-        const utxo = await uut.decodeUtxo(mockData.utxoSet.getAllUTXOs()[0])
+        const utxo = uut.decodeUtxo(mockData.utxoSet.getAllUTXOs()[0])
 
         assert.hasAllKeys(utxo, ['txid', 'outputIdx', 'amount', 'assetID', 'typeID'])
 
@@ -154,6 +246,29 @@ describe('#UTXOLib', () => {
         assert.equal(utxo.amount, mockData.utxoJSON.amount)
         assert.equal(utxo.assetID, mockData.utxoJSON.assetID)
         assert.equal(utxo.typeID, mockData.utxoJSON.typeID)
+      } catch (err) {
+        console.log(err)
+        assert.fail('Unexpected result')
+      }
+    })
+
+    it('should return a valid JSON for a NFT', async () => {
+      try {
+        const utxoObject = uut.encodeNFT(mockData.nftUtxoJSON, mockData.addressString)
+        const utxoJSON = uut.decodeUtxo(utxoObject)
+
+        assert.hasAllKeys(
+          utxoJSON,
+          ['txid', 'outputIdx', 'amount', 'assetID', 'typeID', 'payload', 'groupID']
+        )
+
+        assert.equal(utxoJSON.txid, mockData.nftUtxoJSON.txid)
+        assert.equal(utxoJSON.outputIdx, mockData.nftUtxoJSON.outputIdx)
+        assert.equal(utxoJSON.amount, mockData.nftUtxoJSON.amount)
+        assert.equal(utxoJSON.assetID, mockData.nftUtxoJSON.assetID)
+        assert.equal(utxoJSON.typeID, mockData.nftUtxoJSON.typeID)
+        assert.equal(utxoJSON.groupID, mockData.nftUtxoJSON.groupID)
+        assert.equal(utxoJSON.payload, mockData.nftUtxoJSON.payload)
       } catch (err) {
         console.log(err)
         assert.fail('Unexpected result')
