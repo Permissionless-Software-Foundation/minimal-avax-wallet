@@ -20,7 +20,7 @@ const assetDescription = {
 }
 
 const nftDescription = {
-  assetID: 'CuTnDJAVFSea6VzEj8UXieWmdrANzyFfL3Cge7XyHbT5RsXn1',
+  assetID: bintools.cb58Decode('CuTnDJAVFSea6VzEj8UXieWmdrANzyFfL3Cge7XyHbT5RsXn1'),
   name: 'Bikes',
   symbol: 'BYK',
   denomination: 0,
