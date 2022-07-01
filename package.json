@@ -2,7 +2,7 @@
   "name": "minimal-avax-wallet",
   "version": "1.0.1",
   "description": "A minimalist Avalanche (AVAX) wallet npm library, for use in a web apps.",
-  "main": "index.js",
+  "main": "dist/minimal-avax-wallet.min.js",
   "scripts": {
     "start": "node index.js",
     "test": "npm run lint; TEST=unit nyc --reporter=text mocha --timeout 25000 test/unit/",
