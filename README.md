@@ -7,5 +7,3 @@ The default derivation path for the wallet keypair is m/44'/9000'/0'/0/0. This i
 # Licence
 
 [MIT](LICENSE.md)
-
-a
