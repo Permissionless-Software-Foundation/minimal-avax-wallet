@@ -178,6 +178,11 @@ class MinimalAvaxWallet {
 
     return mnemonic
   }
+
+  // Get the spot price of AVAX in USD.
+  async getUsd () {
+    return await this.ar.getUsd()
+  }
 }
 
 module.exports = MinimalAvaxWallet
