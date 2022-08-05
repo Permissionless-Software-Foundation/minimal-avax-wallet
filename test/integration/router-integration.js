@@ -25,8 +25,15 @@ describe('#AdapterRouter', () => {
       // const addr = '17ky3ujmyg8v0l79xknlk9xhd5d53vj55vhw9sx'
       // const addr = '5FiGLLdvvQLKtEcp6w8yMWs9D44ymngz8YCFiuNnv2A6qG6Vzu'
 
-      const utxoSet = await uut.getUTXOs(addr)
-      console.log('utxoSet: ', utxoSet)
+      await uut.getUTXOs(addr)
+      // console.log('utxoSet: ', utxoSet)
+    })
+  })
+
+  describe('#getUsd', () => {
+    it('should get the current price of AVAX', async () => {
+      const price = await uut.getUsd()
+      console.log('price: ', price)
     })
   })
 })
